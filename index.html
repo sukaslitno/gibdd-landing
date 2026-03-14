@@ -116,29 +116,36 @@
 
     /* ─── BANNER ─── */
     .banner {
-      background: #f2f2f2;
       border-radius: 24px;
       height: 120px;
       position: relative;
       overflow: hidden;
-      cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
     }
-    .banner-car {
+    .banner-track {
+      display: flex;
+      height: 100%;
+      will-change: transform;
+    }
+    .banner-slide {
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      background: #f2f2f2;
+      height: 120px;
+      /* ширина задаётся через JS */
+    }
+    .banner-img {
       position: absolute;
-      right: -10px;
-      top: -15px;
-      width: 245px;
-      height: 245px;
-      object-fit: cover;
       pointer-events: none;
+      object-fit: cover;
     }
     .banner-body {
       position: absolute;
       top: 20px;
       left: 20px;
-      width: 160px;
+      width: 150px;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -147,22 +154,22 @@
       font-size: 12px;
       font-weight: 500;
       color: rgba(0,0,0,0.5);
-      transition: opacity 0.3s;
+      line-height: normal;
     }
     .banner-title {
       font-size: 14px;
       font-weight: 700;
       color: #000;
       line-height: 1.35;
-      transition: opacity 0.3s;
     }
     .banner-dots {
       position: absolute;
-      bottom: 12px;
+      top: 94px;
       left: 20px;
       display: flex;
       align-items: center;
       gap: 4px;
+      z-index: 2;
     }
 
     /* ─── SEARCH BLOCK ─── */
@@ -597,13 +604,45 @@
     </div>
 
     <!-- BANNER SLIDER -->
-    <div class="banner" id="banner" role="region" aria-label="Баннер">
-      <img class="banner-car"
-           src="https://www.figma.com/api/mcp/asset/debc4e4c-c4ea-4187-9644-56e2dacae306"
-           alt="Автомобиль">
-      <div class="banner-body">
-        <div class="banner-risk" id="bannerLabel">Риски:</div>
-        <div class="banner-title" id="bannerTitle">Штраф может увеличиться</div>
+    <div class="banner" id="bannerWrapper" role="region" aria-label="Баннер">
+      <div class="banner-track" id="bannerTrack">
+
+        <!-- Слайд 1: Штраф может увеличиться -->
+        <div class="banner-slide">
+          <img class="banner-img"
+               style="width:245px;height:245px;right:-10px;top:-15px;"
+               src="https://www.figma.com/api/mcp/asset/debc4e4c-c4ea-4187-9644-56e2dacae306"
+               alt="">
+          <div class="banner-body">
+            <div class="banner-risk">Риски:</div>
+            <div class="banner-title">Штраф может увеличиться</div>
+          </div>
+        </div>
+
+        <!-- Слайд 2: Дело могут передать приставам -->
+        <div class="banner-slide">
+          <img class="banner-img"
+               style="width:172px;height:172px;left:170px;top:-26px;"
+               src="https://www.figma.com/api/mcp/asset/91d27a70-5fa1-43fe-8222-01c2897e6e74"
+               alt="">
+          <div class="banner-body">
+            <div class="banner-risk">Риски:</div>
+            <div class="banner-title">Дело могут передать приставам</div>
+          </div>
+        </div>
+
+        <!-- Слайд 3: Возможен запрет на выезд -->
+        <div class="banner-slide">
+          <img class="banner-img"
+               style="width:182px;height:182px;left:161px;top:-30px;"
+               src="https://www.figma.com/api/mcp/asset/0ed13c91-493c-4c17-a381-fb8ba8b245e2"
+               alt="">
+          <div class="banner-body">
+            <div class="banner-risk">Риски:</div>
+            <div class="banner-title">Возможен запрет на выезд</div>
+          </div>
+        </div>
+
       </div>
       <div class="banner-dots" id="bannerDots"></div>
     </div>
@@ -993,9 +1032,9 @@ function scrollToSearch() {
 }
 
 /* ===== INFINITE LOOP SLIDER ===== */
-function makeInfiniteSlider({ viewport, dotsEl, autoMs }) {
-  const track = viewport.querySelector('.reviews-track');
-  const origSlides = Array.from(track.querySelectorAll('.review-card'));
+function makeInfiniteSlider({ viewport, dotsEl, autoMs, trackSel = '.reviews-track', slideSel = '.review-card' }) {
+  const track = viewport.querySelector(trackSel);
+  const origSlides = Array.from(track.querySelectorAll(slideSel));
   const N = origSlides.length;
 
   /* Клонируем крайние слайды для бесконечного цикла */
@@ -1013,7 +1052,7 @@ function makeInfiniteSlider({ viewport, dotsEl, autoMs }) {
   /* Явно задаём ширину каждого слайда в пикселях */
   function applyWidths() {
     const sw = viewport.clientWidth;
-    track.querySelectorAll('.review-card').forEach(s => {
+    track.querySelectorAll(slideSel).forEach(s => {
       s.style.width    = sw + 'px';
       s.style.minWidth = sw + 'px';
       s.style.flexShrink = '0';
@@ -1123,36 +1162,13 @@ makeInfiniteSlider({
 });
 
 /* ===== BANNER SLIDER ===== */
-const bannerSlides = [
-  { label: 'Риски:', title: 'Штраф может увеличиться' },
-  { label: 'Риски:', title: 'Оплатите в первые 20 дней' },
-  { label: 'Риски:', title: 'Могут запретить выезд' },
-];
-
-let bannerCur = 0;
-const bannerLabel = document.getElementById('bannerLabel');
-const bannerTitle = document.getElementById('bannerTitle');
-const bannerDots  = document.getElementById('bannerDots');
-
-function renderBannerDots() {
-  bannerDots.innerHTML = '';
-  bannerSlides.forEach((_, i) => {
-    const el = document.createElement('div');
-    el.className = i === bannerCur ? 's-bar' : 's-dot';
-    if (i !== bannerCur) el.addEventListener('click', () => goBanner(i));
-    bannerDots.appendChild(el);
-  });
-}
-
-function goBanner(idx) {
-  bannerCur = (idx + bannerSlides.length) % bannerSlides.length;
-  bannerLabel.textContent = bannerSlides[bannerCur].label;
-  bannerTitle.textContent = bannerSlides[bannerCur].title;
-  renderBannerDots();
-}
-
-setInterval(() => goBanner(bannerCur + 1), 6000);
-renderBannerDots();
+makeInfiniteSlider({
+  viewport:  document.getElementById('bannerWrapper'),
+  dotsEl:    document.getElementById('bannerDots'),
+  autoMs:    6000,
+  trackSel:  '.banner-track',
+  slideSel:  '.banner-slide',
+});
 </script>
 </body>
 </html>
