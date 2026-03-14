@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Gibdd-Shtraf.ru — Проверка штрафов ГИБДД</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      font-family: 'Manrope', -apple-system, sans-serif;
+      background: #f5f5f5;
+      color: #000;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .page {
+      max-width: 375px;
+      margin: 0 auto;
+      background: #fff;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .logo-img {
+      width: 44px;
+      height: 22px;
+      object-fit: contain;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 2px;
+    }
+
+    .logo-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #000;
+      line-height: 1.375;
+      white-space: nowrap;
+    }
+
+    .logo-since {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(0,0,0,0.5);
+      line-height: 1.4;
+    }
+
+    .menu-btn {
+      width: 40px;
+      height: 40px;
+      background: #f2f2f2;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
+    }
+    .menu-btn:hover  { background: #e6e6e6; }
+    .menu-btn:active { background: #d9d9d9; }
+    .menu-btn:focus-visible { outline: 2px solid #0090ff; outline-offset: 2px; }
+
+    /* ─── MAIN ─── */
+    .main {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ─── HERO TEXT ─── */
+    .hero h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #000;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0,0,0,0.5);
+      line-height: 1.57;
+    }
+
+    /* ─── BANNER ─── */
+    .banner {
+      background: #f2f2f2;
+      border-radius: 24px;
+      height: 120px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .banner-car {
+      position: absolute;
+      right: -10px;
+      top: -15px;
+      width: 245px;
+      height: 245px;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .banner-body {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 160px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .banner-risk {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(0,0,0,0.5);
+      transition: opacity 0.3s;
+    }
+    .banner-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #000;
+      line-height: 1.35;
+      transition: opacity 0.3s;
+    }
+    .banner-dots {
+      position: absolute;
+      bottom: 12px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ─── SEARCH BLOCK ─── */
+    .search-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      height: 38px;
+      padding: 0 12px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      background: #f2f2f2;
+      color: #000;
+      font-family: 'Manrope', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tab:hover        { background: #e8e8e8; }
+    .tab.active       { background: rgba(0,144,255,0.1); border-color: #0090ff; }
+    .tab.active:hover { background: rgba(0,144,255,0.15); }
+    .tab:focus-visible { outline: 2px solid #0090ff; outline-offset: 2px; }
+
+    .search-card {
+      background: #f2f2f2;
+      border-radius: 24px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tab-panel { display: none; flex-direction: column; gap: 12px; }
+    .tab-panel.active { display: flex; }
+
+    .field-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #000;
+      padding: 0 8px;
+    }
+
+    .field-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .input-row {
+      background: #fff;
+      border-radius: 16px;
+      height: 44px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: box-shadow 0.15s;
+    }
+    .input-row:focus-within { box-shadow: 0 0 0 2px #0090ff; }
+    .input-row.error        { box-shadow: 0 0 0 2px #ff3b30; }
+
+    .input-row input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: 'Manrope', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #000;
+      background: transparent;
+      caret-color: #0090ff;
+      min-width: 0;
+    }
+    .input-row input::placeholder { color: #b2b2b2; }
+
+    .flag-img {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+
+    .field-hint {
+      font-size: 10px;
+      font-weight: 500;
+      color: #b2b2b2;
+      padding: 0 8px;
+    }
+
+    .btn {
+      height: 44px;
+      border-radius: 16px;
+      border: none;
+      width: 100%;
+      font-family: 'Manrope', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-primary {
+      background: #0090ff;
+      color: #fff;
+    }
+    .btn-primary:hover  { background: #007ee0; }
+    .btn-primary:active { background: #0070c8; transform: scale(0.98); }
+    .btn-primary:focus-visible { outline: 2px solid #0090ff; outline-offset: 3px; box-shadow: 0 0 0 4px rgba(0,144,255,0.2); }
+    .btn-primary:disabled { background: #b2b2b2; cursor: not-allowed; transform: none; }
+
+    /* ─── STATS ─── */
+    .stats {
+      display: flex;
+      gap: 8px;
+    }
+    .stat-card {
+      flex: 1;
+      background: linear-gradient(180deg, rgba(0,144,255,0.1) 0%, rgba(0,144,255,0) 100%);
+      border-radius: 24px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow: hidden;
+    }
+    .stat-num {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000;
+      line-height: 1.35;
+    }
+    .stat-lbl {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0,0,0,0.5);
+    }
+
+    /* ─── REVIEWS ─── */
+    .reviews { display: flex; flex-direction: column; gap: 12px; }
+
+    .sec-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sec-title { font-size: 16px; font-weight: 700; color: #000; }
+
+    .badge {
+      background: #f2f2f2;
+      border-radius: 8px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #b2b2b2;
+    }
+
+    .reviews-viewport {
+      overflow: hidden;
+      border-radius: 24px;
+    }
+    .reviews-track {
+      display: flex;
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      will-change: transform;
+    }
+    .review-card {
+      background: #f2f2f2;
+      border-radius: 24px;
+      padding: 4px;
+      flex-shrink: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .review-top {
+      background: #fff;
+      border-radius: 20px;
+      padding: 4px 12px 4px 4px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 16px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #f2f2f2;
+    }
+    .reviewer-meta { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .reviewer-row  { display: flex; align-items: center; justify-content: space-between; }
+    .reviewer-name { font-size: 14px; font-weight: 700; color: #000; }
+    .stars { display: flex; gap: 4px; align-items: center; }
+    .star  { width: 14px; height: 14px; }
+    .reviewer-city { font-size: 12px; font-weight: 500; color: rgba(0,0,0,0.5); }
+    .review-text {
+      padding: 4px 12px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(0,0,0,0.5);
+      line-height: 1.57;
+    }
+    .slider-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    /* shared dot/bar */
+    .s-bar {
+      width: 32px; height: 6px;
+      border-radius: 999px;
+      background: #000;
+      transition: all 0.3s;
+    }
+    .s-dot {
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .s-dot:hover { background: rgba(0,0,0,0.5); }
+
+    /* ─── SOURCES ─── */
+    .sources {
+      background: #fff;
+      border-radius: 24px;
+      padding: 12px;
+    }
+    .sources-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #000;
+      padding: 0 12px;
+      margin-bottom: 12px;
+      line-height: normal;
+    }
+    .source-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 48px;
+      padding: 0 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: background 0.12s;
+      -webkit-tap-highlight-color: transparent;
+      border-radius: 12px;
+    }
+    .source-item:last-child { border-bottom: none; }
+    .source-item:hover  { background: rgba(0,0,0,0.03); }
+    .source-item:active { background: rgba(0,0,0,0.06); }
+    .src-logo {
+      height: 24px;
+      width: auto;
+      max-width: 28px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .src-name {
+      flex: 1;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(0,0,0,0.5);
+      line-height: 1.3;
+      min-width: 0;
+    }
+    .src-arrow {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .how { display: flex; flex-direction: column; gap: 12px; }
+    .how-wrap {
+      background: rgba(0,144,255,0.1);
+      border-radius: 24px;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .how-step {
+      background: #fff;
+      border-radius: 20px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .step-head { display: flex; align-items: center; gap: 8px; }
+    .step-badge {
+      width: 20px; height: 20px;
+      border-radius: 8px;
+      background: #0090ff;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-label { font-size: 12px; font-weight: 700; color: #0090ff; }
+    .step-desc  { font-size: 14px; font-weight: 700; color: #000; line-height: 1.57; }
+
+    /* ─── WHY CHECK ─── */
+    .why { display: flex; flex-direction: column; gap: 12px; }
+    .why-list { display: flex; flex-direction: column; gap: 8px; }
+    .why-item {
+      background: #f2f2f2;
+      border-radius: 24px;
+      padding: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .why-icon {
+      width: 40px; height: 40px;
+      background: #fff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .why-icon img { width: 24px; height: 24px; object-fit: contain; }
+    .why-body { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .why-title { font-size: 14px; font-weight: 700; color: #000; }
+    .why-desc  { font-size: 12px; font-weight: 500; color: rgba(0,0,0,0.5); line-height: 1.57; }
+
+    /* ─── CTA ─── */
+    .cta { display: flex; flex-direction: column; gap: 8px; }
+    .cta-note {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(0,0,0,0.5);
+      text-align: center;
+    }
+
+    /* ─── FOOTER ─── */
+    .footer { padding: 24px 16px; }
+    .footer-inner {
+      background: #000;
+      border-radius: 24px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .footer-logo { display: flex; align-items: center; gap: 4px; }
+    .footer-logo .logo-name  { color: #fff; }
+    .footer-logo .logo-since { color: rgba(255,255,255,0.5); }
+    .footer-logo .logo-img   { filter: brightness(0) invert(1); }
+
+    .footer-docs { display: flex; flex-direction: column; gap: 8px; }
+    .footer-docs-title { font-size: 14px; font-weight: 700; color: #fff; }
+    .footer-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-link:hover  { color: rgba(255,255,255,0.8); }
+    .footer-link:active { color: #fff; }
+
+    .footer-sep { width: 100%; height: 1px; background: rgba(255,255,255,0.12); }
+
+    .footer-copy {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      line-height: 1.57;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <a class="logo" href="#">
+      <img class="logo-img"
+           src="https://www.figma.com/api/mcp/asset/d4d6bd2c-f063-4cc6-88c7-da50dd3b6396"
+           alt="Gibdd-Shtraf logo">
+      <div class="logo-text">
+        <span class="logo-name">Gibdd-Shtraf.ru</span>
+        <span class="logo-since">c 2008 года</span>
+      </div>
+    </a>
+    <button class="menu-btn" aria-label="Меню">
+      <img src="https://www.figma.com/api/mcp/asset/aa23f80c-6da5-483f-9623-6a58deb23a1d"
+           width="24" height="24" alt="">
+    </button>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Проверка штрафов ГИБДД</h1>
+      <p>Быстрая проверка штрафов по государственным базам</p>
+    </div>
+
+    <!-- BANNER SLIDER -->
+    <div class="banner" id="banner" role="region" aria-label="Баннер">
+      <img class="banner-car"
+           src="https://www.figma.com/api/mcp/asset/debc4e4c-c4ea-4187-9644-56e2dacae306"
+           alt="Автомобиль">
+      <div class="banner-body">
+        <div class="banner-risk" id="bannerLabel">Риски:</div>
+        <div class="banner-title" id="bannerTitle">Штраф может увеличиться</div>
+      </div>
+      <div class="banner-dots" id="bannerDots"></div>
+    </div>
+
+    <!-- SEARCH BLOCK -->
+    <div class="search-block" id="searchBlock">
+      <div class="tabs" role="tablist" aria-label="Тип проверки">
+        <button class="tab active" role="tab" data-tab="gosnomer" aria-selected="true">Госномер</button>
+        <button class="tab" role="tab" data-tab="sts" aria-selected="false">СТС</button>
+        <button class="tab" role="tab" data-tab="prava" aria-selected="false">Права</button>
+        <button class="tab" role="tab" data-tab="uin" aria-selected="false">УИН</button>
+      </div>
+
+      <div class="search-card">
+        <!-- Госномер -->
+        <div class="tab-panel active" id="panel-gosnomer" role="tabpanel">
+          <div class="field-label">Госномер автомобиля</div>
+          <div class="field-wrap">
+            <div class="input-row" id="row-gosnomer">
+              <input type="text" id="inp-gosnomer" placeholder="А 000 АА 00"
+                     maxlength="9" autocomplete="off" autocorrect="off"
+                     autocapitalize="characters" spellcheck="false">
+              <img class="flag-img"
+                   src="https://www.figma.com/api/mcp/asset/02804023-fdf1-4883-9b83-3ada27af5e14"
+                   alt="RU">
+            </div>
+            <div class="field-hint">Пример: A123BC77</div>
+          </div>
+          <button class="btn btn-primary" onclick="doSearch('gosnomer')">Найти штрафы</button>
+        </div>
+
+        <!-- СТС -->
+        <div class="tab-panel" id="panel-sts" role="tabpanel">
+          <div class="field-label">Серия и номер СТС</div>
+          <div class="field-wrap">
+            <div class="input-row" id="row-sts">
+              <input type="text" id="inp-sts" placeholder="00 АА 000000"
+                     maxlength="10" autocomplete="off" autocorrect="off"
+                     autocapitalize="characters" spellcheck="false">
+            </div>
+            <div class="field-hint">Пример: 77 АА 123456</div>
+          </div>
+          <button class="btn btn-primary" onclick="doSearch('sts')">Найти штрафы</button>
+        </div>
+
+        <!-- Права -->
+        <div class="tab-panel" id="panel-prava" role="tabpanel">
+          <div class="field-label">Серия и номер водительского удостоверения</div>
+          <div class="field-wrap">
+            <div class="input-row" id="row-prava">
+              <input type="text" id="inp-prava" placeholder="00 АА 000000"
+                     maxlength="10" autocomplete="off" autocorrect="off"
+                     autocapitalize="characters" spellcheck="false">
+            </div>
+            <div class="field-hint">Пример: 77 ОМ 123456</div>
+          </div>
+          <button class="btn btn-primary" onclick="doSearch('prava')">Найти штрафы</button>
+        </div>
+
+        <!-- УИН -->
+        <div class="tab-panel" id="panel-uin" role="tabpanel">
+          <div class="field-label">Уникальный идентификатор начисления</div>
+          <div class="field-wrap">
+            <div class="input-row" id="row-uin">
+              <input type="text" id="inp-uin" placeholder="00000000000000000000"
+                     maxlength="20" autocomplete="off" autocorrect="off"
+                     spellcheck="false" inputmode="numeric">
+            </div>
+            <div class="field-hint">20-значный номер постановления</div>
+          </div>
+          <button class="btn btn-primary" onclick="doSearch('uin')">Найти штрафы</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-num">2.4 млн</div>
+        <div class="stat-lbl">Проверок</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2 млн</div>
+        <div class="stat-lbl">Результатов</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3 базы</div>
+        <div class="stat-lbl">Данных</div>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="reviews">
+      <div class="sec-head">
+        <div class="sec-title">Отзывы</div>
+        <div class="badge">3/847</div>
+      </div>
+      <div>
+        <div class="reviews-viewport" id="revViewport">
+          <div class="reviews-track" id="revTrack">
+
+            <div class="review-card">
+              <div class="review-top">
+                <img class="avatar"
+                     src="https://www.figma.com/api/mcp/asset/2e036d2e-2aaa-4198-b366-2b144c5096ec"
+                     alt="Алексей">
+                <div class="reviewer-meta">
+                  <div class="reviewer-row">
+                    <span class="reviewer-name">Алексей</span>
+                    <div class="stars">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/56e1ef68-801e-4c91-ad9e-d1591883f741" alt="☆">
+                    </div>
+                  </div>
+                  <div class="reviewer-city">Москва</div>
+                </div>
+              </div>
+              <div class="review-text">Проверил машину ради интереса и нашёл старый штраф, о котором вообще не знал. Хорошо, что оплатил вовремя.</div>
+            </div>
+
+            <div class="review-card">
+              <div class="review-top">
+                <img class="avatar"
+                     src="https://www.figma.com/api/mcp/asset/78a82129-3e60-403d-96dc-1d0c4035a01e"
+                     alt="Игорь">
+                <div class="reviewer-meta">
+                  <div class="reviewer-row">
+                    <span class="reviewer-name">Игорь</span>
+                    <div class="stars">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/56e1ef68-801e-4c91-ad9e-d1591883f741" alt="☆">
+                    </div>
+                  </div>
+                  <div class="reviewer-city">Казань</div>
+                </div>
+              </div>
+              <div class="review-text">Теперь периодически проверяю машину здесь. Иногда штрафы появляются с задержкой, лучше знать заранее.</div>
+            </div>
+
+            <div class="review-card">
+              <div class="review-top">
+                <img class="avatar"
+                     src="https://www.figma.com/api/mcp/asset/426be376-58d0-4075-8faf-d96916b5ee23"
+                     alt="Анна">
+                <div class="reviewer-meta">
+                  <div class="reviewer-row">
+                    <span class="reviewer-name">Анна</span>
+                    <div class="stars">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/27c6bcf9-49c5-4254-acfc-cabf543df409" alt="★">
+                      <img class="star" src="https://www.figma.com/api/mcp/asset/56e1ef68-801e-4c91-ad9e-d1591883f741" alt="☆">
+                    </div>
+                  </div>
+                  <div class="reviewer-city">Новосибирск</div>
+                </div>
+              </div>
+              <div class="review-text">Понравилось, что всё быстро и без регистрации. Проверка занимает буквально несколько секунд.</div>
+            </div>
+
+          </div>
+        </div>
+        <div class="slider-dots" id="revDots" style="margin-top:8px;"></div>
+      </div>
+    </div>
+
+    <!-- DATA SOURCES -->
+    <div class="sources">
+      <div class="sources-title">Источники данных</div>
+
+      <div class="source-item">
+        <img class="src-logo"
+             src="https://www.figma.com/api/mcp/asset/fd6e814b-ccc7-4dc4-ad8a-a4bd094b75e3"
+             alt="ГИБДД">
+        <span class="src-name">Официальный сайт ГИБДД</span>
+        <img class="src-arrow"
+             src="https://www.figma.com/api/mcp/asset/8c93414b-dd63-451f-a69e-e73087fcfbde"
+             alt="">
+      </div>
+
+      <div class="source-item">
+        <img class="src-logo"
+             src="https://www.figma.com/api/mcp/asset/09c0fe62-328b-423a-8f9e-80c4b238761e"
+             alt="ФССП">
+        <span class="src-name">База ФССП</span>
+        <img class="src-arrow"
+             src="https://www.figma.com/api/mcp/asset/100e6ff2-5364-48df-b604-6428f683c31a"
+             alt="">
+      </div>
+
+      <div class="source-item">
+        <img class="src-logo"
+             src="https://www.figma.com/api/mcp/asset/6dc2aa47-1c1c-4e2f-8df1-5ef88b9136c3"
+             alt="ДИТ Москвы">
+        <span class="src-name">ДИТ Москвы, МАДИ, АМПП</span>
+        <img class="src-arrow"
+             src="https://www.figma.com/api/mcp/asset/e0d64879-bb93-44ae-bff2-dda49819c00d"
+             alt="">
+      </div>
+
+      <div class="source-item">
+        <img class="src-logo"
+             src="https://www.figma.com/api/mcp/asset/ce29c51d-cc8b-4063-b70e-f3ea7210817d"
+             alt="Казначейство">
+        <span class="src-name">Федеральное Казначейство (ГИС ГМП)</span>
+        <img class="src-arrow"
+             src="https://www.figma.com/api/mcp/asset/b27851e2-1b7f-458d-8930-2b02db238686"
+             alt="">
+      </div>
+
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="how">
+      <div class="sec-title">Как это работает?</div>
+      <div class="how-wrap">
+        <div class="how-step">
+          <div class="step-head">
+            <div class="step-badge">1</div>
+            <div class="step-label">Введите данные автомобиля</div>
+          </div>
+          <div class="step-desc">Укажите номер авто, СТС, водительское удостоверение или номер постановления.</div>
+        </div>
+        <div class="how-step">
+          <div class="step-head">
+            <div class="step-badge">2</div>
+            <div class="step-label">Система проверит базы</div>
+          </div>
+          <div class="step-desc">Мы автоматически проверим информацию в официальных базах и найдём возможные штрафы.</div>
+        </div>
+        <div class="how-step">
+          <div class="step-head">
+            <div class="step-badge">3</div>
+            <div class="step-label">Получите результат</div>
+          </div>
+          <div class="step-desc">Вы увидите список найденных штрафов и сможете перейти к их оплате.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHY CHECK -->
+    <div class="why">
+      <div class="sec-title">Зачем проверять штрафы?</div>
+      <div class="why-list">
+        <div class="why-item">
+          <div class="why-icon">
+            <img src="https://www.figma.com/api/mcp/asset/4f5f194c-e284-4eb6-ad87-9075b8820fd8" alt="">
+          </div>
+          <div class="why-body">
+            <div class="why-title">Избежать увеличения штрафа</div>
+            <div class="why-desc">Если не оплатить вовремя, сумма может удвоиться или дело передадут приставам.</div>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">
+            <img src="https://www.figma.com/api/mcp/asset/e4eba322-a0df-49f2-9ee8-229b0110f76b" alt="">
+          </div>
+          <div class="why-body">
+            <div class="why-title">Проверить новые постановления</div>
+            <div class="why-desc">Некоторые штрафы приходят с задержкой, и водитель может не знать о них.</div>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">
+            <img src="https://www.figma.com/api/mcp/asset/71c068fa-53cb-4ce4-b530-cfac452e8ce0" alt="">
+          </div>
+          <div class="why-body">
+            <div class="why-title">Получить скидку 50%</div>
+            <div class="why-desc">Многие штрафы можно оплатить со скидкой в первые 20 дней.</div>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">
+            <img src="https://www.figma.com/api/mcp/asset/7b1f763d-0ec3-4830-bcd8-39d909cd3063" alt="">
+          </div>
+          <div class="why-body">
+            <div class="why-title">Избежать ограничений</div>
+            <div class="why-desc">Могут наложить ограничения на выезд и регистрационные действия.</div>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">
+            <img src="https://www.figma.com/api/mcp/asset/54b22355-f61d-4518-8719-b5fea9bf5144" alt="">
+          </div>
+          <div class="why-body">
+            <div class="why-title">Контроль состояния автомобиля</div>
+            <div class="why-desc">Помогает вовремя узнать о штрафах и задолженностях.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <button class="btn btn-primary" onclick="scrollToSearch()">Проверить автомобиль</button>
+      <div class="cta-note">Проверка занимает 2 минуты</div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img class="logo-img"
+             src="https://www.figma.com/api/mcp/asset/5cbd6c36-25ff-4653-b2c0-22206b24816f"
+             alt="Gibdd-Shtraf logo">
+        <div class="logo-text">
+          <span class="logo-name">Gibdd-Shtraf.ru</span>
+          <span class="logo-since">c 2008 года</span>
+        </div>
+      </div>
+      <div class="footer-docs">
+        <div class="footer-docs-title">Документы</div>
+        <a class="footer-link" href="#">Политика конфиденциальности</a>
+        <a class="footer-link" href="#">Политика использования cookies</a>
+      </div>
+      <div class="footer-sep"></div>
+      <div class="footer-copy">© 2026 Gibdd-Shtraf.ru. Все права защищены</div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* ===== TABS ===== */
+const tabBtns  = document.querySelectorAll('.tab');
+const tabPanels = document.querySelectorAll('.tab-panel');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+    tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+    tabPanels.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected','true');
+    const panel = document.getElementById('panel-' + target);
+    if (panel) {
+      panel.classList.add('active');
+      const inp = panel.querySelector('input');
+      if (inp) requestAnimationFrame(() => inp.focus());
+    }
+  });
+});
+
+/* ===== INPUT UPPERCASE (гос. номер) ===== */
+document.getElementById('inp-gosnomer').addEventListener('input', function() {
+  const pos = this.selectionStart;
+  this.value = this.value.toUpperCase();
+  this.setSelectionRange(pos, pos);
+});
+
+/* ===== SEARCH ===== */
+function doSearch(type) {
+  const inp = document.getElementById('inp-' + type);
+  const row = document.getElementById('row-' + type);
+  const val = inp.value.trim();
+
+  row.classList.remove('error');
+
+  if (!val) {
+    row.classList.add('error');
+    inp.focus();
+    setTimeout(() => row.classList.remove('error'), 2000);
+    return;
+  }
+  /* Stub — replace with real navigation */
+  alert('Ищем штрафы по: ' + val);
+}
+
+function scrollToSearch() {
+  const el = document.getElementById('searchBlock');
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => {
+    const active = el.querySelector('.tab-panel.active input');
+    if (active) active.focus();
+  }, 500);
+}
+
+/* ===== INFINITE LOOP SLIDER ===== */
+function makeInfiniteSlider({ viewport, dotsEl, autoMs }) {
+  const track  = viewport.querySelector('.reviews-track');
+  const slides = Array.from(track.querySelectorAll('.review-card'));
+  const N      = slides.length;
+
+  /* Клонируем первый и последний слайд для бесконечного цикла */
+  const headClone = slides[N - 1].cloneNode(true);
+  const tailClone = slides[0].cloneNode(true);
+  track.insertBefore(headClone, slides[0]); // clone last → prepend
+  track.appendChild(tailClone);              // clone first → append
+  // DOM: [cloneN, 1, 2, …, N, clone1]  → индексы 0..N+1
+
+  let cur          = 1;   // реальный первый слайд
+  let transitioning = false;
+  let autoTimer    = null;
+  let touchX = 0, touchY = 0;
+
+  function w() { return viewport.offsetWidth; }
+
+  function setPos(idx, animate) {
+    track.style.transition = animate
+      ? 'transform 0.38s cubic-bezier(0.4,0,0.2,1)'
+      : 'none';
+    track.style.transform = `translateX(-${idx * w()}px)`;
+  }
+
+  function realIdx() {
+    if (cur <= 0)  return N - 1;
+    if (cur > N)   return 0;
+    return cur - 1;
+  }
+
+  function updateDots() {
+    dotsEl.innerHTML = '';
+    const ri = realIdx();
+    for (let i = 0; i < N; i++) {
+      const el = document.createElement('div');
+      el.className = i === ri ? 's-bar' : 's-dot';
+      if (i !== ri) el.addEventListener('click', () => { go(i + 1); resetAuto(); });
+      dotsEl.appendChild(el);
+    }
+  }
+
+  function go(idx) {
+    if (transitioning) return;
+    cur = idx;
+    setPos(cur, true);
+    transitioning = true;
+    updateDots();
+  }
+
+  /* После анимации: бесшовный переход на реальный дубль */
+  track.addEventListener('transitionend', () => {
+    transitioning = false;
+    if (cur === 0) {
+      cur = N;
+      setPos(cur, false);
+    } else if (cur === N + 1) {
+      cur = 1;
+      setPos(cur, false);
+    }
+    updateDots();
+  });
+
+  /* Touch / swipe */
+  viewport.addEventListener('touchstart', e => {
+    touchX = e.touches[0].clientX;
+    touchY = e.touches[0].clientY;
+    stopAuto();
+  }, { passive: true });
+
+  viewport.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchX;
+    const dy = e.changedTouches[0].clientY - touchY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+      go(dx < 0 ? cur + 1 : cur - 1);
+    }
+    startAuto();
+  }, { passive: true });
+
+  /* Mouse drag (десктоп) */
+  let mouseX = 0, mouseDown = false;
+  viewport.addEventListener('mousedown', e => {
+    mouseX = e.clientX;
+    mouseDown = true;
+    stopAuto();
+  });
+  viewport.addEventListener('mouseup', e => {
+    if (!mouseDown) return;
+    mouseDown = false;
+    const dx = e.clientX - mouseX;
+    if (Math.abs(dx) > 40) go(dx < 0 ? cur + 1 : cur - 1);
+    startAuto();
+  });
+  viewport.addEventListener('mouseleave', () => { mouseDown = false; startAuto(); });
+
+  function startAuto() {
+    if (!autoMs) return;
+    autoTimer = setInterval(() => go(cur + 1), autoMs);
+  }
+  function stopAuto()  { clearInterval(autoTimer); }
+  function resetAuto() { stopAuto(); startAuto(); }
+
+  /* Init */
+  setPos(cur, false);
+  updateDots();
+  startAuto();
+}
+
+/* ===== REVIEWS SLIDER ===== */
+makeInfiniteSlider({
+  viewport: document.getElementById('revViewport'),
+  dotsEl:   document.getElementById('revDots'),
+  autoMs:   6000
+});
+
+/* ===== BANNER SLIDER ===== */
+const bannerSlides = [
+  { label: 'Риски:',   title: 'Штраф может увеличиться' },
+  { label: 'Совет:',   title: 'Оплатите в первые 20 дней' },
+  { label: 'Без этого:', title: 'Могут запретить выезд' },
+];
+
+let bannerCur = 0;
+const bannerLabel = document.getElementById('bannerLabel');
+const bannerTitle = document.getElementById('bannerTitle');
+const bannerDots  = document.getElementById('bannerDots');
+
+function renderBannerDots() {
+  bannerDots.innerHTML = '';
+  bannerSlides.forEach((_, i) => {
+    const el = document.createElement('div');
+    el.className = i === bannerCur ? 's-bar' : 's-dot';
+    if (i !== bannerCur) el.addEventListener('click', () => goBanner(i));
+    bannerDots.appendChild(el);
+  });
+}
+
+function goBanner(idx) {
+  bannerCur = (idx + bannerSlides.length) % bannerSlides.length;
+  bannerLabel.textContent = bannerSlides[bannerCur].label;
+  bannerTitle.textContent = bannerSlides[bannerCur].title;
+  renderBannerDots();
+}
+
+setInterval(() => goBanner(bannerCur + 1), 6000);
+renderBannerDots();
+</script>
+</body>
+</html>
