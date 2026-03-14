@@ -274,6 +274,17 @@
       color: #b2b2b2;
       padding: 0 8px;
     }
+    .field-error {
+      font-size: 10px;
+      font-weight: 500;
+      color: #ff3b30;
+      padding: 0 8px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease;
+      line-height: 1.4;
+    }
+    .field-error.visible { max-height: 40px; }
 
     .btn {
       height: 44px;
@@ -445,12 +456,21 @@
     }
     .source-item:hover  { background: #f8f8f8; }
     .source-item:active { background: #f0f0f0; }
-    .src-logo {
+    .src-logo-wrap {
+      width: 24px;
       height: 24px;
-      width: auto;
-      max-width: 28px;
-      object-fit: contain;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .src-logo {
+      max-width: 24px;
+      max-height: 24px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
     }
     .src-name {
       flex: 1;
@@ -663,13 +683,14 @@
           <div class="field-wrap">
             <div class="input-row" id="row-gosnomer">
               <input type="text" id="inp-gosnomer" placeholder="А 000 АА 00"
-                     maxlength="9" autocomplete="off" autocorrect="off"
+                     maxlength="12" autocomplete="off" autocorrect="off"
                      autocapitalize="characters" spellcheck="false">
               <img class="flag-img"
                    src="https://www.figma.com/api/mcp/asset/02804023-fdf1-4883-9b83-3ada27af5e14"
                    alt="RU">
             </div>
-            <div class="field-hint">Пример: A123BC77</div>
+            <div class="field-hint">Пример: А 123 ВС 77</div>
+            <div class="field-error" id="err-gosnomer"></div>
           </div>
           <button class="btn btn-primary" onclick="doSearch('gosnomer')">Найти штрафы</button>
         </div>
@@ -680,10 +701,11 @@
           <div class="field-wrap">
             <div class="input-row" id="row-sts">
               <input type="text" id="inp-sts" placeholder="00 АА 000000"
-                     maxlength="10" autocomplete="off" autocorrect="off"
+                     maxlength="12" autocomplete="off" autocorrect="off"
                      autocapitalize="characters" spellcheck="false">
             </div>
             <div class="field-hint">Пример: 77 АА 123456</div>
+            <div class="field-error" id="err-sts"></div>
           </div>
           <button class="btn btn-primary" onclick="doSearch('sts')">Найти штрафы</button>
         </div>
@@ -694,10 +716,11 @@
           <div class="field-wrap">
             <div class="input-row" id="row-prava">
               <input type="text" id="inp-prava" placeholder="00 АА 000000"
-                     maxlength="10" autocomplete="off" autocorrect="off"
+                     maxlength="12" autocomplete="off" autocorrect="off"
                      autocapitalize="characters" spellcheck="false">
             </div>
             <div class="field-hint">Пример: 77 ОМ 123456</div>
+            <div class="field-error" id="err-prava"></div>
           </div>
           <button class="btn btn-primary" onclick="doSearch('prava')">Найти штрафы</button>
         </div>
@@ -712,6 +735,7 @@
                      spellcheck="false" inputmode="numeric">
             </div>
             <div class="field-hint">20-значный номер постановления</div>
+            <div class="field-error" id="err-uin"></div>
           </div>
           <button class="btn btn-primary" onclick="doSearch('uin')">Найти штрафы</button>
         </div>
@@ -822,9 +846,11 @@
       <div class="sources-list">
 
         <div class="source-item">
-          <img class="src-logo"
-               src="https://www.figma.com/api/mcp/asset/cd8bdc1c-1175-4b72-a389-da78e693172b"
-               alt="ГИБДД">
+          <div class="src-logo-wrap">
+            <img class="src-logo"
+                 src="https://www.figma.com/api/mcp/asset/cd8bdc1c-1175-4b72-a389-da78e693172b"
+                 alt="ГИБДД">
+          </div>
           <span class="src-name">Официальный сайт ГИБДД</span>
           <img class="src-arrow"
                src="https://www.figma.com/api/mcp/asset/60f1e481-458d-4961-9e1d-ae4cb8809607"
@@ -832,9 +858,11 @@
         </div>
 
         <div class="source-item">
-          <img class="src-logo"
-               src="https://www.figma.com/api/mcp/asset/d315f66e-0f88-4f9a-a178-19ba9926c101"
-               alt="ФССП">
+          <div class="src-logo-wrap">
+            <img class="src-logo"
+                 src="https://www.figma.com/api/mcp/asset/d315f66e-0f88-4f9a-a178-19ba9926c101"
+                 alt="ФССП">
+          </div>
           <span class="src-name">База ФССП</span>
           <img class="src-arrow"
                src="https://www.figma.com/api/mcp/asset/85d6921a-2ffb-4c16-bd8a-3c0bbfb10da5"
@@ -842,9 +870,11 @@
         </div>
 
         <div class="source-item">
-          <img class="src-logo"
-               src="https://www.figma.com/api/mcp/asset/0705cbf9-4a6e-4c09-aade-898e08355b61"
-               alt="ДИТ Москвы">
+          <div class="src-logo-wrap">
+            <img class="src-logo"
+                 src="https://www.figma.com/api/mcp/asset/0705cbf9-4a6e-4c09-aade-898e08355b61"
+                 alt="ДИТ Москвы">
+          </div>
           <span class="src-name">ДИТ Москвы, МАДИ, АМПП</span>
           <img class="src-arrow"
                src="https://www.figma.com/api/mcp/asset/79b4175e-67a7-4bc7-a30f-bfc99a56c332"
@@ -852,9 +882,11 @@
         </div>
 
         <div class="source-item">
-          <img class="src-logo"
-               src="https://www.figma.com/api/mcp/asset/82f1c974-69a2-40b1-a8a8-3799bc1f5c83"
-               alt="Казначейство">
+          <div class="src-logo-wrap">
+            <img class="src-logo"
+                 src="https://www.figma.com/api/mcp/asset/82f1c974-69a2-40b1-a8a8-3799bc1f5c83"
+                 alt="Казначейство">
+          </div>
           <span class="src-name">Федеральное Казначейство (ГИС ГМП)</span>
           <img class="src-arrow"
                src="https://www.figma.com/api/mcp/asset/c0761dd4-421b-4e74-841c-1e6ed9c75890"
@@ -997,29 +1029,148 @@ tabBtns.forEach(btn => {
   });
 });
 
-/* ===== INPUT UPPERCASE (гос. номер) ===== */
-document.getElementById('inp-gosnomer').addEventListener('input', function() {
-  const pos = this.selectionStart;
-  this.value = this.value.toUpperCase();
-  this.setSelectionRange(pos, pos);
-});
+/* ===== ГОСНОМЕР — маска и валидация ===== */
+(function() {
+  /* Допустимые буквы для номерного знака (кириллица) */
+  const VALID_LETTERS = 'АВЕКМНОРСТУХ';
+  /* Латиница → кириллица для удобства набора */
+  const LAT_TO_CYR = { A:'А', B:'В', E:'Е', K:'К', M:'М', H:'Н', O:'О', P:'Р', C:'С', T:'Т', Y:'У', X:'Х' };
+
+  /* Правило для каждой позиции сырого номера (0-8): 'L' = буква, 'D' = цифра */
+  const RULES = ['L','D','D','D','L','L','D','D','D'];
+
+  function normChar(ch, pos) {
+    ch = ch.toUpperCase();
+    ch = LAT_TO_CYR[ch] || ch;
+    const rule = RULES[pos];
+    if (rule === 'L') return VALID_LETTERS.includes(ch) ? ch : null;
+    if (rule === 'D') return /\d/.test(ch) ? ch : null;
+    return null;
+  }
+
+  /* Форматирует сырую строку (до 9 символов) в "Б ЦЦЦ ЛЛ РР" */
+  function fmt(raw) {
+    let out = '';
+    for (let i = 0; i < raw.length; i++) {
+      if (i === 1 || i === 4 || i === 6) out += ' ';
+      out += raw[i];
+    }
+    return out;
+  }
+
+  function showErr(id, msg) {
+    const el = document.getElementById('err-' + id);
+    const row = document.getElementById('row-' + id);
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('visible');
+    row.classList.add('error');
+  }
+  function clearErr(id) {
+    const el = document.getElementById('err-' + id);
+    const row = document.getElementById('row-' + id);
+    if (!el) return;
+    el.classList.remove('visible');
+    row.classList.remove('error');
+  }
+
+  const inp = document.getElementById('inp-gosnomer');
+  let raw = '';
+
+  inp.addEventListener('input', function() {
+    const stripped = this.value.replace(/\s/g, '').toUpperCase();
+    let newRaw = '';
+    let badChar = null;
+
+    for (let i = 0; i < stripped.length && i < 9; i++) {
+      const ch = stripped[i];
+      const norm = normChar(ch, i);
+      if (norm !== null) {
+        newRaw += norm;
+      } else {
+        /* Первый неверный символ */
+        badChar = { ch, pos: i };
+        break;
+      }
+    }
+
+    raw = newRaw;
+    this.value = fmt(raw);
+
+    /* Курсор в конец */
+    const end = this.value.length;
+    requestAnimationFrame(() => this.setSelectionRange(end, end));
+
+    if (badChar !== null) {
+      const rule = RULES[badChar.pos];
+      const msg = rule === 'L'
+        ? 'Здесь нужна буква: А В Е К М Н О Р С Т У Х'
+        : 'Здесь должна быть цифра';
+      showErr('gosnomer', msg);
+      setTimeout(() => clearErr('gosnomer'), 2500);
+    } else {
+      clearErr('gosnomer');
+    }
+  });
+
+  /* Не даём нажать неверный символ сразу (keydown) */
+  inp.addEventListener('keydown', function(e) {
+    const key = e.key;
+    if (key.length !== 1 || e.ctrlKey || e.metaKey) return;
+    const pos = raw.length;
+    if (pos >= 9) { e.preventDefault(); return; }
+    const norm = normChar(key, pos);
+    if (norm === null) {
+      e.preventDefault();
+      const rule = RULES[pos];
+      const msg = rule === 'L'
+        ? 'Здесь нужна буква: А В Е К М Н О Р С Т У Х'
+        : 'Здесь должна быть цифра';
+      showErr('gosnomer', msg);
+      setTimeout(() => clearErr('gosnomer'), 2000);
+    }
+  });
+})();
 
 /* ===== SEARCH ===== */
 function doSearch(type) {
   const inp = document.getElementById('inp-' + type);
-  const row = document.getElementById('row-' + type);
   const val = inp.value.trim();
+  const raw = val.replace(/\s/g, '');
 
-  row.classList.remove('error');
+  clearInputErr(type);
 
-  if (!val) {
-    row.classList.add('error');
-    inp.focus();
-    setTimeout(() => row.classList.remove('error'), 2000);
-    return;
+  if (!raw) {
+    showInputErr(type, 'Введите данные для поиска'); return;
   }
-  /* Stub — replace with real navigation */
+
+  if (type === 'gosnomer' && raw.length < 6) {
+    showInputErr(type, 'Введите полный госномер: буква + 3 цифры + 2 буквы'); return;
+  }
+  if ((type === 'sts' || type === 'prava') && raw.length < 10) {
+    showInputErr(type, 'Необходимо 10 символов'); return;
+  }
+  if (type === 'uin' && raw.length < 20) {
+    showInputErr(type, `Введено ${raw.length} из 20 цифр`); return;
+  }
+
+  /* Stub — replace with real search */
   alert('Ищем штрафы по: ' + val);
+}
+
+function showInputErr(type, msg) {
+  const inp = document.getElementById('inp-' + type);
+  const row = document.getElementById('row-' + type);
+  const el  = document.getElementById('err-' + type);
+  row.classList.add('error');
+  inp.focus();
+  if (el) { el.textContent = msg; el.classList.add('visible'); }
+  setTimeout(() => clearInputErr(type), 3000);
+}
+function clearInputErr(type) {
+  document.getElementById('row-' + type)?.classList.remove('error');
+  const el = document.getElementById('err-' + type);
+  if (el) el.classList.remove('visible');
 }
 
 function scrollToSearch() {
