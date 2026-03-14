@@ -408,7 +408,6 @@
 
     /* ─── SOURCES ─── */
     .sources {
-      background: #fff;
       border-radius: 24px;
       padding: 12px;
     }
@@ -420,21 +419,24 @@
       margin-bottom: 12px;
       line-height: normal;
     }
+    .sources-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
     .source-item {
+      background: #fff;
+      border-radius: 20px;
       display: flex;
       align-items: center;
       gap: 8px;
-      height: 48px;
-      padding: 0 12px;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 12px;
       cursor: pointer;
       transition: background 0.12s;
       -webkit-tap-highlight-color: transparent;
-      border-radius: 12px;
     }
-    .source-item:last-child { border-bottom: none; }
-    .source-item:hover  { background: rgba(0,0,0,0.03); }
-    .source-item:active { background: rgba(0,0,0,0.06); }
+    .source-item:hover  { background: #f8f8f8; }
+    .source-item:active { background: #f0f0f0; }
     .src-logo {
       height: 24px;
       width: auto;
@@ -447,7 +449,7 @@
       font-size: 12px;
       font-weight: 500;
       color: rgba(0,0,0,0.5);
-      line-height: 1.3;
+      line-height: normal;
       min-width: 0;
     }
     .src-arrow {
@@ -777,47 +779,49 @@
     <!-- DATA SOURCES -->
     <div class="sources">
       <div class="sources-title">Источники данных</div>
+      <div class="sources-list">
 
-      <div class="source-item">
-        <img class="src-logo"
-             src="https://www.figma.com/api/mcp/asset/fd6e814b-ccc7-4dc4-ad8a-a4bd094b75e3"
-             alt="ГИБДД">
-        <span class="src-name">Официальный сайт ГИБДД</span>
-        <img class="src-arrow"
-             src="https://www.figma.com/api/mcp/asset/8c93414b-dd63-451f-a69e-e73087fcfbde"
-             alt="">
+        <div class="source-item">
+          <img class="src-logo"
+               src="https://www.figma.com/api/mcp/asset/cd8bdc1c-1175-4b72-a389-da78e693172b"
+               alt="ГИБДД">
+          <span class="src-name">Официальный сайт ГИБДД</span>
+          <img class="src-arrow"
+               src="https://www.figma.com/api/mcp/asset/60f1e481-458d-4961-9e1d-ae4cb8809607"
+               alt="">
+        </div>
+
+        <div class="source-item">
+          <img class="src-logo"
+               src="https://www.figma.com/api/mcp/asset/d315f66e-0f88-4f9a-a178-19ba9926c101"
+               alt="ФССП">
+          <span class="src-name">База ФССП</span>
+          <img class="src-arrow"
+               src="https://www.figma.com/api/mcp/asset/85d6921a-2ffb-4c16-bd8a-3c0bbfb10da5"
+               alt="">
+        </div>
+
+        <div class="source-item">
+          <img class="src-logo"
+               src="https://www.figma.com/api/mcp/asset/0705cbf9-4a6e-4c09-aade-898e08355b61"
+               alt="ДИТ Москвы">
+          <span class="src-name">ДИТ Москвы, МАДИ, АМПП</span>
+          <img class="src-arrow"
+               src="https://www.figma.com/api/mcp/asset/79b4175e-67a7-4bc7-a30f-bfc99a56c332"
+               alt="">
+        </div>
+
+        <div class="source-item">
+          <img class="src-logo"
+               src="https://www.figma.com/api/mcp/asset/82f1c974-69a2-40b1-a8a8-3799bc1f5c83"
+               alt="Казначейство">
+          <span class="src-name">Федеральное Казначейство (ГИС ГМП)</span>
+          <img class="src-arrow"
+               src="https://www.figma.com/api/mcp/asset/c0761dd4-421b-4e74-841c-1e6ed9c75890"
+               alt="">
+        </div>
+
       </div>
-
-      <div class="source-item">
-        <img class="src-logo"
-             src="https://www.figma.com/api/mcp/asset/09c0fe62-328b-423a-8f9e-80c4b238761e"
-             alt="ФССП">
-        <span class="src-name">База ФССП</span>
-        <img class="src-arrow"
-             src="https://www.figma.com/api/mcp/asset/100e6ff2-5364-48df-b604-6428f683c31a"
-             alt="">
-      </div>
-
-      <div class="source-item">
-        <img class="src-logo"
-             src="https://www.figma.com/api/mcp/asset/6dc2aa47-1c1c-4e2f-8df1-5ef88b9136c3"
-             alt="ДИТ Москвы">
-        <span class="src-name">ДИТ Москвы, МАДИ, АМПП</span>
-        <img class="src-arrow"
-             src="https://www.figma.com/api/mcp/asset/e0d64879-bb93-44ae-bff2-dda49819c00d"
-             alt="">
-      </div>
-
-      <div class="source-item">
-        <img class="src-logo"
-             src="https://www.figma.com/api/mcp/asset/ce29c51d-cc8b-4063-b70e-f3ea7210817d"
-             alt="Казначейство">
-        <span class="src-name">Федеральное Казначейство (ГИС ГМП)</span>
-        <img class="src-arrow"
-             src="https://www.figma.com/api/mcp/asset/b27851e2-1b7f-458d-8930-2b02db238686"
-             alt="">
-      </div>
-
     </div>
 
     <!-- HOW IT WORKS -->
@@ -989,38 +993,45 @@ function scrollToSearch() {
 
 /* ===== INFINITE LOOP SLIDER ===== */
 function makeInfiniteSlider({ viewport, dotsEl, autoMs }) {
-  const track  = viewport.querySelector('.reviews-track');
-  const slides = Array.from(track.querySelectorAll('.review-card'));
-  const N      = slides.length;
+  const track = viewport.querySelector('.reviews-track');
+  const origSlides = Array.from(track.querySelectorAll('.review-card'));
+  const N = origSlides.length;
 
-  /* Клонируем первый и последний слайд для бесконечного цикла */
-  const headClone = slides[N - 1].cloneNode(true);
-  const tailClone = slides[0].cloneNode(true);
-  track.insertBefore(headClone, slides[0]); // clone last → prepend
-  track.appendChild(tailClone);              // clone first → append
-  // DOM: [cloneN, 1, 2, …, N, clone1]  → индексы 0..N+1
+  /* Клонируем крайние слайды для бесконечного цикла */
+  const headClone = origSlides[N - 1].cloneNode(true);
+  const tailClone = origSlides[0].cloneNode(true);
+  track.insertBefore(headClone, origSlides[0]);
+  track.appendChild(tailClone);
+  // DOM: [cloneN, slide1…slideN, clone1] → индексы 0..N+1
 
-  let cur          = 1;   // реальный первый слайд
-  let transitioning = false;
-  let autoTimer    = null;
-  let touchX = 0, touchY = 0;
+  let cur = 1;
+  let busy = false;
+  let autoTimer = null;
+  let swipeX = 0, swipeY = 0, swiping = false;
 
-  function w() { return viewport.offsetWidth; }
+  /* Явно задаём ширину каждого слайда в пикселях */
+  function applyWidths() {
+    const sw = viewport.clientWidth;
+    track.querySelectorAll('.review-card').forEach(s => {
+      s.style.width    = sw + 'px';
+      s.style.minWidth = sw + 'px';
+      s.style.flexShrink = '0';
+    });
+  }
 
   function setPos(idx, animate) {
-    track.style.transition = animate
-      ? 'transform 0.38s cubic-bezier(0.4,0,0.2,1)'
-      : 'none';
-    track.style.transform = `translateX(-${idx * w()}px)`;
+    const sw = viewport.clientWidth;
+    track.style.transition = animate ? 'transform 0.36s cubic-bezier(0.4,0,0.2,1)' : 'none';
+    track.style.transform  = `translateX(${-idx * sw}px)`;
   }
 
   function realIdx() {
-    if (cur <= 0)  return N - 1;
-    if (cur > N)   return 0;
+    if (cur <= 0) return N - 1;
+    if (cur > N)  return 0;
     return cur - 1;
   }
 
-  function updateDots() {
+  function renderDots() {
     dotsEl.innerHTML = '';
     const ri = realIdx();
     for (let i = 0; i < N; i++) {
@@ -1032,57 +1043,61 @@ function makeInfiniteSlider({ viewport, dotsEl, autoMs }) {
   }
 
   function go(idx) {
-    if (transitioning) return;
+    if (busy) return;
+    busy = true;
     cur = idx;
     setPos(cur, true);
-    transitioning = true;
-    updateDots();
+    renderDots();
   }
 
-  /* После анимации: бесшовный переход на реальный дубль */
   track.addEventListener('transitionend', () => {
-    transitioning = false;
-    if (cur === 0) {
-      cur = N;
-      setPos(cur, false);
-    } else if (cur === N + 1) {
-      cur = 1;
-      setPos(cur, false);
-    }
-    updateDots();
+    busy = false;
+    if (cur === 0)     { cur = N; setPos(cur, false); }
+    if (cur === N + 1) { cur = 1; setPos(cur, false); }
+    renderDots();
   });
 
-  /* Touch / swipe */
+  /* ── Touch / swipe ── */
   viewport.addEventListener('touchstart', e => {
-    touchX = e.touches[0].clientX;
-    touchY = e.touches[0].clientY;
+    swipeX = e.touches[0].clientX;
+    swipeY = e.touches[0].clientY;
+    swiping = true;
     stopAuto();
   }, { passive: true });
 
+  viewport.addEventListener('touchmove', e => {
+    if (!swiping) return;
+    const dx = Math.abs(e.touches[0].clientX - swipeX);
+    const dy = Math.abs(e.touches[0].clientY - swipeY);
+    if (dx > dy && dx > 5) e.preventDefault(); /* блокируем скролл при горизонтальном свайпе */
+  }, { passive: false });
+
   viewport.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchX;
-    const dy = e.changedTouches[0].clientY - touchY;
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+    if (!swiping) return;
+    swiping = false;
+    const dx = e.changedTouches[0].clientX - swipeX;
+    const dy = e.changedTouches[0].clientY - swipeY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) {
       go(dx < 0 ? cur + 1 : cur - 1);
     }
     startAuto();
   }, { passive: true });
 
-  /* Mouse drag (десктоп) */
-  let mouseX = 0, mouseDown = false;
+  /* ── Mouse drag ── */
+  let mouseStartX = 0, dragging = false;
   viewport.addEventListener('mousedown', e => {
-    mouseX = e.clientX;
-    mouseDown = true;
+    mouseStartX = e.clientX;
+    dragging = true;
     stopAuto();
+    e.preventDefault();
   });
-  viewport.addEventListener('mouseup', e => {
-    if (!mouseDown) return;
-    mouseDown = false;
-    const dx = e.clientX - mouseX;
-    if (Math.abs(dx) > 40) go(dx < 0 ? cur + 1 : cur - 1);
+  window.addEventListener('mouseup', e => {
+    if (!dragging) return;
+    dragging = false;
+    const dx = e.clientX - mouseStartX;
+    if (Math.abs(dx) > 30) go(dx < 0 ? cur + 1 : cur - 1);
     startAuto();
   });
-  viewport.addEventListener('mouseleave', () => { mouseDown = false; startAuto(); });
 
   function startAuto() {
     if (!autoMs) return;
@@ -1091,10 +1106,12 @@ function makeInfiniteSlider({ viewport, dotsEl, autoMs }) {
   function stopAuto()  { clearInterval(autoTimer); }
   function resetAuto() { stopAuto(); startAuto(); }
 
-  /* Init */
+  applyWidths();
   setPos(cur, false);
-  updateDots();
+  renderDots();
   startAuto();
+
+  window.addEventListener('resize', () => { applyWidths(); setPos(cur, false); });
 }
 
 /* ===== REVIEWS SLIDER ===== */
@@ -1106,9 +1123,9 @@ makeInfiniteSlider({
 
 /* ===== BANNER SLIDER ===== */
 const bannerSlides = [
-  { label: 'Риски:',   title: 'Штраф может увеличиться' },
-  { label: 'Совет:',   title: 'Оплатите в первые 20 дней' },
-  { label: 'Без этого:', title: 'Могут запретить выезд' },
+  { label: 'Риски:', title: 'Штраф может увеличиться' },
+  { label: 'Риски:', title: 'Оплатите в первые 20 дней' },
+  { label: 'Риски:', title: 'Могут запретить выезд' },
 ];
 
 let bannerCur = 0;
